@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 export default function Timer({ onTimeUp }) {
   const [timeLeft, setTimeLeft] = useState(3600); // Set test duration in seconds (1 hour)
@@ -34,6 +33,4 @@ export default function Timer({ onTimeUp }) {
   );
 }
 
-Timer.propTypes = {
-  onTimeUp: PropTypes.func.isRequired,
-};
+

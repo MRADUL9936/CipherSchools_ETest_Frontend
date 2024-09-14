@@ -10,7 +10,7 @@ function Signup() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
-
+    const BACKEND_URL=import.meta.env.VITE_BACKEND_URL
     const handleSubmit = (e) => {
         e.preventDefault();
     
@@ -21,7 +21,7 @@ function Signup() {
         }
     
         // Send data to the backend
-        axios.post("https://cipherschools-etest-backend.onrender.com/user/signup", 
+        axios.post(`${BACKEND_URL}/user/signup`, 
             {   name,
                 email,
                 password,

@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function Header() {
     const navigate = useNavigate();
-
+    const loginstatus=useSelector(state=>state.auth.status)
+    const BACKEND_URL=import.meta.env.VITE_BACKEND_URL
     const handleSignOut = (e) => {
       e.preventDefault();
-      axios.post("http://localhost:3000/user/signout" )
+      axios.post(`${BACKEND_URL}/user/signout` )
       .then(response => {
     
           if (response.status === 200 ) {
@@ -52,12 +54,14 @@ function Header() {
                     >
                         Signup
                     </Link>
+                    { loginstatus==true &&
                     <button 
                         onClick={handleSignOut}
                         className="hover:text-gray-400"
                     >
                         Sign Out
                     </button>
+                     }
                 </nav>
             </div>
         </header>

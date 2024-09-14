@@ -12,8 +12,9 @@ function App() {
   const location = useLocation();
   
   // Conditionally render the Header if the path is not "/test"
-  const showHeader = location.pathname === "/login" || location.pathname === "/register" ;  
-
+  const showHeader = location.pathname === "/login" || location.pathname === "/register" ;
+  
+  
 
   return (
     <>

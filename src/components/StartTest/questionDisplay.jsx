@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { markAnswer,navigateToQuestion } from '../../store/questionSlice';
+import { useEffect } from 'react';
 
-function QuestionDisplay({ question, onAnswer, onNext }) {
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+function QuestionDisplay({ question, QuestionLength,QuestionIndex,currentQuestionAnswer }) {
+  const dispatch = useDispatch();
+
+  const [selectedAnswer, setSelectedAnswer] = useState(currentQuestionAnswer);
+
+  useEffect(() => {
+    setSelectedAnswer(currentQuestionAnswer);
+  }, [currentQuestionAnswer]);     
+
+   console.log(selectedAnswer,currentQuestionAnswer)
 
   const handleAnswerChange = (e) => {
     setSelectedAnswer(e.target.value);
   };
 
+    const handleAnswer = (answer) => {
+   dispatch(markAnswer({ questionId: question._id, answer }));
+   };
+
+  const handleNavigate = (index) => {
+    dispatch(navigateToQuestion(index));
+  };  //callback funtion for navigating to the next question after marking the answer
+
+
   const handleSubmitAnswer = () => {
     if (selectedAnswer) {
-      onAnswer(selectedAnswer);
-      onNext();
+      handleAnswer(selectedAnswer);
+    handleNavigate((QuestionIndex + 1) % QuestionLength)
       setSelectedAnswer(null);
     } else {
       alert('Please select an answer before proceeding.');
@@ -49,13 +68,6 @@ function QuestionDisplay({ question, onAnswer, onNext }) {
   );
 }
 
-QuestionDisplay.propTypes = {
-  question: PropTypes.shape({
-    question: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(PropTypes.string).isRequired
-  }).isRequired,
-  onAnswer: PropTypes.func.isRequired,
-  onNext: PropTypes.func.isRequired
-};
+
 
 export default QuestionDisplay;

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 export default function Test() {
   const [tests, setTests] = useState([]);
   const navigate = useNavigate();
-
+  const BACKEND_URL=import.meta.env.VITE_BACKEND_URL       
   useEffect(() => {
     // Fetch data from backend
     const fetchTests = async () => {
       try {
-        const response = await fetch('https://cipherschools-etest-backend.onrender.com/test');
-        const data = await response.json();
+        const response = await axios.get(`${BACKEND_URL}/test`,{
+          withCredentials: true,
+        });
+        const data = await response.data;
         setTests(data); // Store fetched tests in state
       } catch (error) {
         console.error('Error fetching test data:', error);

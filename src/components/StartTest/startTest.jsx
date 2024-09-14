@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useParams,useNavigate } from 'react-router-dom';
-import { fetchQuestions, submitAnswers, resetTest, navigateToQuestion, markAnswer } from '../../store/questionSlice';
+import {useParams,useNavigate } from 'react-router-dom';
+import { fetchQuestions, submitAnswers, resetTest } from '../../store/questionSlice';
 import QuestionDisplay from './questionDisplay';
 import QuestionNavigation from './questionNavigation';
 import Timer from './timer';
 
 export default function StartTest() {
   const dispatch = useDispatch();
+  const navigate=useNavigate()
+
   const { testId } = useParams();
   const questions = useSelector(state => state.question.questions);
   const currentQuestion = useSelector(state => state.question.currentQuestion);
@@ -15,7 +17,12 @@ export default function StartTest() {
   const status = useSelector(state => state.question.status);
   const submitStatus = useSelector(state => state.question.submitStatus);
   const email = useSelector((state) => state.auth.userData); //get email from authSlice
- const navigate=useNavigate()
+ 
+  let currentQuestionAnswer =  null; ///check the answer of the current question
+      if(answers[currentQuestion]!==undefined){
+        currentQuestionAnswer = answers[currentQuestion].answer
+      }
+
   useEffect(() => {
     dispatch(fetchQuestions(testId));
 
@@ -24,16 +31,10 @@ export default function StartTest() {
     };
   }, [dispatch, testId]);
 
-  const handleAnswer = (answer) => {
-    dispatch(markAnswer({ questionId: questions[currentQuestion]._id, answer }));
-  };
 
-  const handleNavigate = (index) => {
-    dispatch(navigateToQuestion(index));
-  };
 
   const handleSubmit = () => {
-    dispatch(submitAnswers({email, testId, answers}));
+    dispatch(submitAnswers({email, testId,answers}));
     navigate('/submit')
   };
 
@@ -46,8 +47,9 @@ export default function StartTest() {
           <>
             <QuestionDisplay
               question={questions[currentQuestion]}
-              onAnswer={handleAnswer}
-              onNext={() => handleNavigate((currentQuestion + 1) % questions.length)}
+              QuestionIndex={currentQuestion}
+              QuestionLength={questions.length}
+              currentQuestionAnswer={currentQuestionAnswer}
             />
             <Timer onTimeUp={handleSubmit}/>
           </>
@@ -55,9 +57,9 @@ export default function StartTest() {
       </div>
       <div className="md:w-1/3">
         <QuestionNavigation
-          questions={questions}
-          currentQuestion={currentQuestion}
-          onNavigate={handleNavigate}
+        questionLength={questions.length}
+        currentQuestion={currentQuestion}
+        answers={answers}
         />
         <button
           onClick={handleSubmit}

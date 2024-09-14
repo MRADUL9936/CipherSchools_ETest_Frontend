@@ -9,20 +9,22 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false); // State for showing/hiding password
     const navigate = useNavigate();
     const dispatch=useDispatch()
-
+    const BACKEND_URL=import.meta.env.VITE_BACKEND_URL
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log({ email, password }); // Log data before sending
-
-        axios.post("https://cipherschools-etest-backend.onrender.com/user/login", { email, password }, {
+         
+        axios.post(`${BACKEND_URL}/user/login`, { email, password }, {
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+                withCredentials: true // Ensure cookies are sent
+              
         })
         .then(response => {
             console.log(response.data); // Log the response data
             if (response.status === 200 && response.data === "Success") {
-                dispatch(login({ userData: email  }));           //dispath the function to store the email in slice
+                dispatch(login({ userData: email }));           //dispath the function to store the email in slice
                 navigate("/tests");
                 alert("login Successfull")
             } else {
