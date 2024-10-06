@@ -31,7 +31,7 @@ export default function StartTest() {
     };
   }, [dispatch, testId]);
 
-
+       console.log("reloading parent ")
 
   const handleSubmit = () => {
     dispatch(submitAnswers({email, testId,answers}));

@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const initialState = {
   questions: [],
+  questionsLength:0,
   currentQuestion: 0,
   answers: {},
   status: "idle", // To track loading status for fetching questions
@@ -90,6 +92,7 @@ export const questionSlice = createSlice({
       .addCase(fetchQuestions.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.questions = action.payload;
+        state.questionsLength=state.questions.length
       })
       .addCase(fetchQuestions.rejected, (state, action) => {
         state.status = "failed";
@@ -113,3 +116,18 @@ export const { markAnswer, navigateToQuestion, resetTest } =
   questionSlice.actions;
 
 export default questionSlice.reducer;
+
+
+//creating a custome hooks for getting the current question and changing the current question
+
+export function useCurrentQuestion(){
+  const currentQuestion = useSelector(state => state.question.currentQuestion);
+  const questionsLength=useSelector(state=>state.question.questionsLength)
+              const dispatch=useDispatch()
+   function changeCurrentQuestion(index){
+           dispatch(navigateToQuestion(index))
+   }
+      
+   return [currentQuestion,changeCurrentQuestion];
+
+}

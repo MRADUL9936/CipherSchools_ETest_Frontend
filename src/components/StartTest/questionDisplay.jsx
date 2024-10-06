@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { markAnswer,navigateToQuestion } from '../../store/questionSlice';
+import { markAnswer,navigateToQuestion,useCurrentQuestion } from '../../store/questionSlice';
 import { useEffect } from 'react';
 
 function QuestionDisplay({ question, QuestionLength,QuestionIndex,currentQuestionAnswer }) {
   const dispatch = useDispatch();
-
+        
   const [selectedAnswer, setSelectedAnswer] = useState(currentQuestionAnswer);
-
+  const [currentQuestion,setCurrentQuestion]=useCurrentQuestion(); ///custom hooks from questionSlice 
+  console.log("curentQuestion",currentQuestion)
   useEffect(() => {
     setSelectedAnswer(currentQuestionAnswer);
   }, [currentQuestionAnswer]);     
@@ -23,6 +24,7 @@ function QuestionDisplay({ question, QuestionLength,QuestionIndex,currentQuestio
    };
 
   const handleNavigate = (index) => {
+    setCurrentQuestion(index);
     dispatch(navigateToQuestion(index));
   };  //callback funtion for navigating to the next question after marking the answer
 

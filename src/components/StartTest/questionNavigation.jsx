@@ -8,7 +8,7 @@ function QuestionNavigation({ questionLength, currentQuestion, answers }) {
     dispatch(navigateToQuestion(index));
   };  //callback funtion for navigating to the next question after marking the answer
 
-
+      console.log("Realoading question navigation")
   return (
     <div className="p-4 border border-gray-300 rounded-md shadow-sm">
       <h3 className="text-lg font-bold mb-4">Question Navigation</h3>

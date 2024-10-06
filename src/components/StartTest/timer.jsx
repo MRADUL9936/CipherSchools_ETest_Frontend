@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 export default function Timer({ onTimeUp }) {
   const [timeLeft, setTimeLeft] = useState(3600); // Set test duration in seconds (1 hour)
-
+ console.log("reloading timer")
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft((prevTime) => {

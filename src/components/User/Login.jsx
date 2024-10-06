@@ -22,11 +22,12 @@ function Login() {
               
         })
         .then(response => {
-            console.log(response.data); // Log the response data
+            console.log(response); // Log the response data
             if (response.status === 200 && response.data === "Success") {
                 dispatch(login({ userData: email }));           //dispath the function to store the email in slice
-                navigate("/tests");
+                console.log(document.cookie)
                 alert("login Successfull")
+                navigate("/tests");
             } else {
                 alert("Login failed, please try again");
             }
@@ -34,6 +35,7 @@ function Login() {
         .catch(error => {
             if (error.response) {
                 // Request made and server responded
+              
                 console.log(error.response.data);
                 console.log(error.response.status);
                 console.log(error.response.headers);
